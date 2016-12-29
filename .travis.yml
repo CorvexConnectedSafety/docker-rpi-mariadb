@@ -9,12 +9,12 @@ script:
 - docker build -t toniher/docker-rpi-mariadb .
 # test image
 - docker run toniher/docker-rpi-mariadb mysql --version
-# push image
-- >
-  if [ "$TRAVIS_BRANCH" == "master" ]; then
-    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-    TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print $NF}')
-    docker tag toniher/docker-rpi-mariadb toniher/docker-rpi-mariadb:$TAG
-    docker push toniher/docker-rpi-mariadb:$TAG
-    docker push toniher/docker-rpi-mariadb
-  fi
+# push image - NOTE: We don't do. Let's keep it in Dockerfile for now
+#- >
+#  if [ "$TRAVIS_BRANCH" == "master" ]; then
+#    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
+#    TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print $NF}')
+#    docker tag toniher/docker-rpi-mariadb toniher/docker-rpi-mariadb:$TAG
+#    docker push toniher/docker-rpi-mariadb:$TAG
+#    docker push toniher/docker-rpi-mariadb
+#  fi
