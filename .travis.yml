@@ -6,9 +6,9 @@ script:
 # prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
 # build image
-- docker build -t toniher/docker-rpi-mariadb .
+- docker build -t toniher/rpi-mariadb .
 # test image
-- docker run toniher/docker-rpi-mariadb mysql --version
+- docker run toniher/rpi-mariadb mysql --version
 # push image - NOTE: We don't do. Let's keep it in Dockerfile for now
 #- >
 #  if [ "$TRAVIS_BRANCH" == "master" ]; then

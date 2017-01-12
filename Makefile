@@ -1,5 +1,5 @@
 DOCKER_IMAGE_VERSION=10.0
-DOCKER_IMAGE_NAME=toniher/docker-rpi-mariadb
+DOCKER_IMAGE_NAME=toniher/rpi-mariadb
 DOCKER_IMAGE_TAGNAME=$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 
 default: build
