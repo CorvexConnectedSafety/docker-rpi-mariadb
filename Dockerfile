@@ -28,6 +28,11 @@ RUN { \
 # comment out a few problematic configuration values
 RUN sed -Ei 's/^(bind-address|log)/#&/' /etc/mysql/my.cnf
 
+COPY socket.cnf /etc/mysql/conf.d/socket.cnf
+
+# prepare directory for PID
+RUN mkdir -p /var/run/mysqld; chown mysql:mysql /var/run/mysqld
+
 VOLUME /var/lib/mysql
 
 COPY entrypoint.sh /
