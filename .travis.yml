@@ -3,18 +3,16 @@ services:
 - docker
 language: bash
 script:
-# prepare qemu
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-# build image
 - docker build -t toniher/rpi-mariadb .
-# test image
 - docker run toniher/rpi-mariadb mysql --version
-# push image - NOTE: We don't do. Let's keep it in Dockerfile for now
-#- >
-#  if [ "$TRAVIS_BRANCH" == "master" ]; then
-#    docker login -u="$DOCKER_USER" -p="$DOCKER_PASS"
-#    TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print $NF}')
-#    docker tag toniher/rpi-mariadb toniher/docker-rpi-mariadb:$TAG
-#    docker push toniher/rpi-mariadb:$TAG
-#    docker push toniher/rpi-mariadb
-#  fi
+after_success:
+- if [ "$TRAVIS_BRANCH" == "master" ]; then docker login -u="$DOCKER_HUB_USERNAME"
+  -p="$DOCKER_HUB_PASSWORD" TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print
+  $NF}') docker tag toniher/rpi-mariadb toniher/rpi-mariadb:$TAG docker push toniher/rpi-mariadb:$TAG
+  docker push toniher/rpi-mariadb fi
+env:
+  global:
+  - secure: Q/63D6kJP87ktE8Cq+EEPeBny93CbiP/HLh4gfceBus7daShhoK2UBB5NMcdcLua2h+3IZKS4bANMRQ67BLYGYv8zdwC1AWxZPu87JTJ07UPGOLJ6+uxeop+eqqc+wbeaBlfpgKCRcHCmLwfpVWHGUv2n9aQbcBMUTrO3kosS51tKtOSEKmpVKDmIBlANUi93k6LwWJcPlcovNM840vyym+yJX5lI6OP6xzEtMA+9KC+NVsRHNBvRDhq3+P8VQMdui00eRJEt+S0Unzlh3Ve7U6Iaqm/sjru8AQqBqdXrN5cHkd0xEXt3SRWyOEyQSgV7zFpPatHWB74R5xl2Jac3/A2m01v42+FctygoZDWnmSJMdsGftr5qHX3lvdYkx/bIt0ZUZHL1dof9fhnnY0f67PC8FCXBZfcYEFMRAO1e+VLlonJ1Jg3nGSITpqXm20qcpHhvWAz/+JUbvNHgj2SigtyIneCBRny2HucORUXOLSOMPf0eG9Gn49HHRtXgPDZFykzr5tUG8VtML1fKNja21Reb7uwPnCglbOXqYxq2aNJwYLZmGIWqdIV465fwnp1OZG1HPJCWJvQQx7H4qJWbfCZCwW64wjJ085ZG32PjVVd0gC1CFzFZxLkp5qraqdEmu4TAzOLQAqDzXaShXo/UqYzik8x2q047bfu/Rb9zEM=
+  - secure: f1wThyndIo4eWMUpKaNC6/CC9DZAjhrHeBxyyr1kVoOT5SFI+VbNNDG1u8pp5lMS1wNvvgLSnDuh7MzG+Rsk/YdXkqdoyeo9CXFM6UFA0uGzd/SR2Ns8blLXewmAXbNr/N1bPua4+2x+q4pCROnI0Tw+MAIjAm+fC9EzOOqq0GcCrxUaRP6b/w2b3w9kFmjlQlUvoRoRmC0l9f0YaH5fvFlRl7A6ly3327W++xbAAL8aHP9rMdU64C62N0obmrWDIo/Qr1uC3YzvQKsm4yhfFIin/HHrN52uWp/z16yg1qG/MLmOKimVADnBldNac+Bpf/D9AGFdx/kBliVK0DoomPo2IBOeodC286o8hNKgv4TeE3M6XBetoehazmHyaF4tonBNwdD716UJfPl1+lSOgrUY6zdCcakgCPblKP/CxqEJyNN+S/KVQHtJXvMzB580KDKr5XHktmtNyCVOW6rvdeZNeQNAzfGoTdHO9hg+E+pWANuWmMyVnININ6WDk11wt301Dk69Q7JI1zApr/LZo5NCLvzHoXHxpU40JzTttgf3vIpJqsn054F+pTEJOHlKhDkpDQ07vXBplDdXR2GNKCKWK5n+t+5uvpWSuJu2GXcmnYrZhMvg70K0/4x3tt+jvsrsGNsMziSYv9XOgGy8mfmm5rlLtkCYecXrIF0lfXo=
+  - secure: EkD7uGhAJJwnvUf6FMDM48UR2hvliDwKd1M65moVQMsgsjoqJNcBUNweYXO4OjrET0evGvmp9hPdp8tZwY+clE3Nrw9DkkqyH5IwwFc5wKE6/WdQzPTTHhIbe9TSsi3ObdJ7rlZKRamjbe7q3Gqgu55iqu9PvDQGJrNEDa/CmmU0Ao1TT3cK/YuCnp6Q0UDSvtQOjrK5lHSZQ/MdHWNYIc6pVz2o/tZWoeJAtfm3JriJhifwihGGHOizGbHAIeli4mVZRoJkUc3zOILJVIX4uuIEbC7VrDagNwf/fjAHeAxxqNXVIVFJ3Rz9aoKSyR0F6YdAhtSyH+3X2iXsufMN0ggWUtlj5v/4lBXR3/avt24a428pgUIRhBsK3zmn8+RTslmH+WCl7W85Nu0+lW1Ro2qQvkYRjhdteDUz4t2tRt8ja4FrHuvpIE+XQHA/iDlzpE0BEAPqOKJEjvFFoP9Awn7sqdZ/zfa2mOxY7ARmXZJSr7eLulrFXhhE4PLNvnR+6Wz75ODcFCWcaM8+I3qtY6aHrLeRBIt0ix7xcX8ZmiAMH5idSdPdttWOVN948gmGIKpJ0Gn4XxsQ34fYz4B/E8NsJNX65UveskLg0HqRj6pFNdchuw/abYcFk69z7GWG7xI8z1e1HLZ//N9gCHcl02dLxvZKBTxa5o6yKmekCCY=
