@@ -7,10 +7,13 @@ script:
 - docker build -t toniher/rpi-mariadb .
 - docker run toniher/rpi-mariadb mysql --version
 after_success:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then docker login -u="$DOCKER_HUB_USERNAME"
-  -p="$DOCKER_HUB_PASSWORD" TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print
-  $NF}') docker tag toniher/rpi-mariadb toniher/rpi-mariadb:$TAG docker push toniher/rpi-mariadb:$TAG
-  docker push toniher/rpi-mariadb fi
+- if [ "$TRAVIS_BRANCH" == "master" ]; then 
+- docker login -u="$DOCKER_HUB_USERNAME" -p="$DOCKER_HUB_PASSWORD" 
+- TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print $NF}') 
+- docker tag toniher/rpi-mariadb toniher/rpi-mariadb:$TAG 
+- docker push toniher/rpi-mariadb:$TAG
+- docker push toniher/rpi-mariadb 
+- fi
 env:
   global:
   - secure: Q/63D6kJP87ktE8Cq+EEPeBny93CbiP/HLh4gfceBus7daShhoK2UBB5NMcdcLua2h+3IZKS4bANMRQ67BLYGYv8zdwC1AWxZPu87JTJ07UPGOLJ6+uxeop+eqqc+wbeaBlfpgKCRcHCmLwfpVWHGUv2n9aQbcBMUTrO3kosS51tKtOSEKmpVKDmIBlANUi93k6LwWJcPlcovNM840vyym+yJX5lI6OP6xzEtMA+9KC+NVsRHNBvRDhq3+P8VQMdui00eRJEt+S0Unzlh3Ve7U6Iaqm/sjru8AQqBqdXrN5cHkd0xEXt3SRWyOEyQSgV7zFpPatHWB74R5xl2Jac3/A2m01v42+FctygoZDWnmSJMdsGftr5qHX3lvdYkx/bIt0ZUZHL1dof9fhnnY0f67PC8FCXBZfcYEFMRAO1e+VLlonJ1Jg3nGSITpqXm20qcpHhvWAz/+JUbvNHgj2SigtyIneCBRny2HucORUXOLSOMPf0eG9Gn49HHRtXgPDZFykzr5tUG8VtML1fKNja21Reb7uwPnCglbOXqYxq2aNJwYLZmGIWqdIV465fwnp1OZG1HPJCWJvQQx7H4qJWbfCZCwW64wjJ085ZG32PjVVd0gC1CFzFZxLkp5qraqdEmu4TAzOLQAqDzXaShXo/UqYzik8x2q047bfu/Rb9zEM=
