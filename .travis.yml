@@ -4,15 +4,15 @@ services:
 language: bash
 script:
 - docker run --rm --privileged multiarch/qemu-user-static:register --reset
-- docker build -t toniher/rpi-mariadb .
-- docker run toniher/rpi-mariadb mysql --version
+- docker build -t toniher/rpi-mariadb:jessie .
+- docker run toniher/rpi-mariadb:jessie mysql --version
 after_success:
-- if [ "$TRAVIS_BRANCH" == "master" ]; then
+- if [ "$TRAVIS_BRANCH" == "jessie" ]; then
 - docker login -u="$DOCKER_HUB_USERNAME" -p="$DOCKER_HUB_PASSWORD"
 - TAG=$(grep "ENV MYSQL_VERSION" Dockerfile | awk 'NF>1{print $NF}')
-- docker tag toniher/rpi-mariadb toniher/rpi-mariadb:$TAG
+- docker tag toniher/rpi-mariadb:jessie toniher/rpi-mariadb:$TAG
 - docker push toniher/rpi-mariadb:$TAG
-- docker push toniher/rpi-mariadb
+- docker push toniher/rpi-mariadb:jessie
 - fi
 env:
   global:
