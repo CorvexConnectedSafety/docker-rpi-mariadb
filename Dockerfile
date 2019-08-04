@@ -1,5 +1,5 @@
 # Pull base image
-FROM resin/rpi-raspbian:stretch
+FROM balenalib/rpi-raspbian:stretch
 MAINTAINER Toni Hermoso Pulido <toniher@cau.cat>
 
 # add our user and group first to make sure their IDs get assigned consistently, regardless of whatever dependencies get added
