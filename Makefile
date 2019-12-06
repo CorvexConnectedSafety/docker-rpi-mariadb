@@ -1,6 +1,7 @@
-DOCKER_IMAGE_VERSION=10.0
-DOCKER_IMAGE_NAME=toniher/rpi-mariadb
+DOCKER_IMAGE_VERSION=10.3
+DOCKER_IMAGE_NAME=corvexconnected/mariadb
 DOCKER_IMAGE_TAGNAME=$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
+DOCKER_REGISTRY=registry.gitlab.com
 
 default: build
 
@@ -9,7 +10,7 @@ build:
 	docker tag $(DOCKER_IMAGE_TAGNAME) $(DOCKER_IMAGE_NAME):latest
 
 push:
-	docker push $(DOCKER_IMAGE_NAME)
+	docker push $(DOCKER_REGISTRY)/$(DOCKER_IMAGE_NAME):$(DOCKER_IMAGE_VERSION)
 
 test:
 	docker run --rm $(DOCKER_IMAGE_TAGNAME) /bin/echo "Success."
